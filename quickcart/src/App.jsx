@@ -1,7 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import UserLayout from "./components/UserLayout/UserLayout";
-import Home from "./components/Home/Home";
+import Home from "./components/UserLayout/Home/Home";
+import Shop from "./components/UserLayout/Shop/Shop";
+import Login from "./components/shared/Login/Login";
+import Register from "./components/shared/Register/Register";
+
+//#region Routing
 let routers = createBrowserRouter([
   {
     path: "",
@@ -9,13 +14,20 @@ let routers = createBrowserRouter([
     children: [
       { path: "", element: <Home /> },
       { path: "home", element: <Home /> },
+      { path: "shop", element: <Shop /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+
+      { path: "*", element: <Shop /> },
     ],
   },
 ]);
+//#endregion
 
 function App() {
   return (
     <>
+    
       <RouterProvider router={routers}></RouterProvider>
     </>
   );
