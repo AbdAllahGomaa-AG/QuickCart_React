@@ -1,40 +1,51 @@
 import axios from 'axios'
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
+import { UserData } from '../../../context/UserContext'
+import { BASE_URL } from '../../../environment/environment'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Register () {
-
-  
+  // #region state
   const [IsLogin, setIsLogin] = useState(false)
-  
   let navigate = useNavigate()
+  const { setToken } = useContext(UserData)
+  // #endregion
+
   //#region  From register
   async function Register (values) {
     try {
-      // call api
-      let { data } = await axios.post(
-        `https://ecommerce.routemisr.com/api/v1/auth/signup`,
-        values
-      )
-      console.log(data)
-      if (data.message == 'success') {
-        navigate('/home')
-        localStorage.setItem('token', data.token)
-        setIsLogin(true)
-      }
+      await toast.promise(axios.post(`${BASE_URL}/auth/signup`, values), {
+        loading: 'Registering...',
+        success: res => {
+          const data = res.data
+          if (data.message === 'success') {
+            localStorage.setItem('token', data.token)
+            setToken(data.token)
+            setIsLogin(true)
+            setTimeout(() => {
+              navigate('/home')
+            }, 2000)
+            return <b>Successfully registered!</b>
+          }
+          throw new Error('Registration failed')
+        },
+        error: err => {
+          if (err.response?.data?.message) {
+            return <b>{err.response.data.message}</b>
+          }
+          return <b>Something went wrong</b>
+        }
+      })
     } catch (error) {
-      if (error.response && error.response.data) {
-        console.log(error.response.data.message)
-      } else {
-        console.log('Something went wrong:', error.message)
-      }
+      console.log(error)
     }
-
-    console.log(values)
   }
-  //    validation
+  //#endregion
+
+  // #region validation
   let validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(3, 'min length is 3')
@@ -58,8 +69,11 @@ export default function Register () {
       )
       .required('Phone is required')
   })
-  // formik
+  // #endregion
+
+  // #region formik
   let Formik = useFormik({
+    //
     initialValues: {
       name: '',
       email: '',
@@ -70,10 +84,11 @@ export default function Register () {
     validationSchema: validationSchema,
     onSubmit: Register
   })
-  //#endregion`
+  //#endregion
 
   return (
     <>
+      <Toaster position='top-right' reverseOrder={false} />
       <section className='bg-gray-50 dark:bg-gray-900 min-h-screen py-10'>
         <div className='flex flex-col items-center justify-start pt-8 px-6 py-8 mx-auto lg:py-0'>
           <div className='w-full bg-white rounded-xl shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
@@ -281,7 +296,6 @@ export default function Register () {
           </div>
         </div>
       </section>
-      
     </>
   )
 }

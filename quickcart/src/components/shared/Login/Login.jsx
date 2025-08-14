@@ -1,15 +1,17 @@
 import axios from 'axios'
 import { useFormik } from 'formik'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { BASE_URL } from '../../../environment/environment'
 import toast, { Toaster } from 'react-hot-toast'
+import { UserData } from '../../../context/UserContext'
 
 export default function Login () {
   //#region state
   const [IsLogin, setIsLogin] = useState(false)
   let navigate = useNavigate()
+  const { setToken } = useContext(UserData)
   //#endregion
 
   //#region  From login
@@ -21,7 +23,8 @@ export default function Login () {
           const data = res.data
           if (data.message === 'success') {
             localStorage.setItem('token', data.token)
-            setIsLogin()
+            setIsLogin(true)
+            setToken(data.token)
             setTimeout(() => {
               navigate('/home')
             }, 2000)
@@ -151,12 +154,11 @@ export default function Login () {
                         Remember me
                       </label>
                     </div>
-                    <a
-                      href='#'
+                    <NavLink to='/forgot-password'
                       className='text-sm font-medium text-primary-600 hover:underline dark:text-primary-500'
                     >
                       Forgot password?
-                    </a>
+                    </NavLink>
                   </div>
                 </div>
                 {/* register */}

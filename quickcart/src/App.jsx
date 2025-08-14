@@ -1,36 +1,41 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./App.css";
-import UserLayout from "./components/UserLayout/UserLayout";
-import Home from "./components/UserLayout/Home/Home";
-import Shop from "./components/UserLayout/Shop/Shop";
-import Login from "./components/shared/Login/Login";
-import Register from "./components/shared/Register/Register";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import './App.css'
+import UserLayout from './components/UserLayout/UserLayout'
+import Home from './components/UserLayout/Home/Home'
+import Shop from './components/UserLayout/Shop/Shop'
+import Login from './components/shared/Login/Login'
+import Register from './components/shared/Register/Register'
+import UserContextProvider from './context/UserContextProvider'
+import ForgetPassword from './components/shared/ForgetPassword/ForgetPassword'
+
 
 //#region Routing
 let routers = createBrowserRouter([
   {
-    path: "",
+    path: '',
     element: <UserLayout />,
     children: [
-      { path: "", element: <Home /> },
-      { path: "home", element: <Home /> },
-      { path: "shop", element: <Shop /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      { path: '', element: <Home /> },
+      { path: 'home', element: <Home /> },
+      { path: 'shop', element: <Shop /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'forgot-password', element: <ForgetPassword /> },
 
-      { path: "*", element: <Shop /> },
-    ],
-  },
-]);
+      { path: '*', element: <Shop /> }
+    ]
+  }
+])
 //#endregion
 
-function App() {
+function App () {
   return (
     <>
-    
-      <RouterProvider router={routers}></RouterProvider>
+      <UserContextProvider>
+        <RouterProvider router={routers}></RouterProvider>
+      </UserContextProvider>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

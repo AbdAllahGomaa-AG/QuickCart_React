@@ -1,15 +1,29 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import logo from '../../../assets/images/LOGO.png'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { UserData } from '../../../context/UserContext'
+import toast from 'react-hot-toast'
 
 export default function NavBar () {
   //#region State
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [currencyOpen, setCurrencyOpen] = useState(false)
-  
+  const { Token, setToken } = useContext(UserData)
+  let navigate = useNavigate()
   //#endregion
 
+  //#region  Functions
+  function logout () {
+    localStorage.removeItem('token')
+    setToken(null)
+    navigate('/login')
+    toast.success('Successfully logged out!')
+
+  }
+  //#endregion
+
+  //#region Render
   return (
     //
     <>
@@ -56,22 +70,6 @@ export default function NavBar () {
           {/* About us - contact us */}
           <div className='list'>
             <ul className='text-light-text flex gap-4 text-sm'>
-              <li className='cursor-pointer'>
-                <a className='hover:text-black transition-all duration-200 cursor-pointer'>
-                  About Us
-                </a>
-              </li>
-              <li className='cursor-pointer'>
-                <a className='hover:text-black transition-all duration-200 cursor-pointer'>
-                  My account
-                </a>
-              </li>
-              <li className='cursor-pointer'>
-                <a className='hover:text-black transition-all duration-200 cursor-pointer'>
-                  Wishlist
-                </a>
-              </li>
-              <p className='border-l border-light-text'></p>
               <p>
                 We deliver to you every day from{' '}
                 <span className='text-orangeMain'>7:00 to 23:00</span>
@@ -165,7 +163,7 @@ export default function NavBar () {
               )}
             </div>
 
-            <a>Order track</a>
+            <a className='hover:text-gray-500 transition-all duration-200 cursor-pointer'>Order track</a>
           </div>
         </div>
         <div className='border-b'></div>
@@ -221,16 +219,6 @@ export default function NavBar () {
 
           {/* account + favorites + cart */}
           <div className='flex items-center gap-6'>
-            {/* account */}
-            <div>
-              <p className='text-xs cursor-pointer text-gray-500 hover:text-black transition-all duration-200'>
-                <NavLink to='/login'>Sign In</NavLink>
-              </p>
-
-              <p className='text-sm font-semibold cursor-pointer'>Account</p>
-            </div>
-            <i className='fa-solid fa-user text-2xl hover:text-gray-600 transition-all duration-200'></i>
-
             {/* Favorite */}
             <div className='relative'>
               <i className='fa-solid fa-heart text-2xl text-gray-900 cursor-pointer transition-all duration-300 ease-in-out hover:text-red-500 hover:scale-110'></i>
@@ -251,6 +239,24 @@ export default function NavBar () {
               >
                 0
               </span>
+            </div>
+            {/* account */}
+            {Token ? (
+              <i className='fa-solid fa-user text-2xl hover:text-gray-600 transition-all duration-200'></i>
+            ) : null}
+
+            <div>
+              {Token ? (
+                <p className='text-sm cursor-pointer text-gray-500 hover:text-black transition-all duration-200'>
+                  <NavLink to='/login' onClick={() => logout()}>
+                    logout
+                  </NavLink>
+                </p>
+              ) : (
+                <p className='text-sm cursor-pointer text-gray-500 hover:text-black transition-all duration-200'>
+                  <NavLink to='/login'>Sign In</NavLink>
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -369,4 +375,5 @@ export default function NavBar () {
       </div>
     </>
   )
+  //#endregion
 }
