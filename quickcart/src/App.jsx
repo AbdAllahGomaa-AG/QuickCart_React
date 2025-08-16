@@ -8,7 +8,8 @@ import Register from './components/shared/Register/Register'
 import UserContextProvider from './context/UserContextProvider'
 import ForgetPassword from './components/shared/ForgetPassword/ForgetPassword'
 import Guards from './guards/guards'
-
+import AllProduct from './components/Product/AllProduct'
+import SpecificProduct from './components/Product/specificProduct'
 
 //#region Routing
 let routers = createBrowserRouter([
@@ -22,6 +23,9 @@ let routers = createBrowserRouter([
       { path: 'login', element: <Guards><Login /></Guards> },
       { path: 'register', element: <Guards><Register /></Guards> },
       { path: 'forgot-password', element: <Guards><ForgetPassword /></Guards> },
+      { path: 'all-product', element: <Guards><AllProduct /></Guards> },
+      { path: 'specific-product/:id', element: <Guards><SpecificProduct /></Guards> },
+
 
       { path: '*', element: <Shop /> }
     ]

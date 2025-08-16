@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Slider from "../../Slider/Slider";
-import Categories from "../../categories/Categories.jsx";
-import Product from "../../Product/Product";
+import React, { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../../../environment/environment.jsx";
-import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { BASE_URL } from "../../environment/environment";
+import Product from "./Product";
 
-export default function Home() {
+export default function AllProduct() {
   //#region  Products
   const [Products, setProducts] = useState([]);
   async function GetProducts() {
@@ -21,30 +19,21 @@ export default function Home() {
     GetProducts();
   }, []);
   //#endregion
-
   return (
     <>
-      <Slider />
-      <Categories />
-      {/* Products */}
       <div className="lg:max-w-[80%] w-[80%] mx-auto mt-4">
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-center py-6">
           <h2 className="text-lg font-semibold flex items-center ">
-            Top Products
+            All Products
             <span className="text-gray-500 text-xs ml-2 whitespace-nowrap md:block hidden">
-              New products with updated stocks.
+              All products with updated stocks.
             </span>
           </h2>
-          <NavLink to="/all-product">
-            <button className="bg-white flex justify-center items-center text-gray-800 border border-gray-300 px-3 py-2 rounded-full text-xs hover:bg-gray-100 transition mt-2 sm:mt-0">
-              View All <i className="fas fa-chevron-right ml-1"></i>
-            </button>
-          </NavLink>
+
         </div>
         <div className="grid grid-cols-1 gap-4  lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1  ">
           {Products.slice()
             .reverse()
-            .slice(0, 8)
             .map((product) => (
               <Product key={product.id} product={product} />
             ))}

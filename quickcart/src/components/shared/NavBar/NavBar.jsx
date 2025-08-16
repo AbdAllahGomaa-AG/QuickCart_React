@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 export default function NavBar () {
   // #region
-  // حدد تاريخ نهاية العرض
+  
   const endDate = new Date()
   endDate.setDate(endDate.getDate() + 10)
   endDate.setHours(endDate.getHours() + 6)
@@ -303,10 +303,10 @@ export default function NavBar () {
         <div className='container max-w-[80%] mx-auto hidden lg:flex items-center justify-between gap-4 py-3'>
           <ul className='flex gap-4 text-sm font-semibold'>
             <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
-              <NavLink to='home'>Home</NavLink>{' '}
+              <NavLink to='/home'>Home</NavLink>
             </li>
             <li className='cursor-pointer hover:text-gray-500 transition-all duration-200 '>
-              <NavLink to='shop'>Shop</NavLink>
+              <NavLink to='/shop'>Shop</NavLink>
             </li>
             <li className='cursor-pointer hover:text-gray-500 transition-all duration-200 '>
               <NavLink to='fruits-vegetables'>Fruits & Vegetables</NavLink>
