@@ -1,9 +1,13 @@
-import React from "react";
+import React from 'react'
+import Slider from '../../Slider/Slider'
+import Categories from '../../categories/Categories.jsx'
 
-export default function Home() {
+
+export default function Home () {
   return (
     <>
-      <p>From home</p>
+      <Slider />
+      <Categories />
     </>
-  );
+  )
 }

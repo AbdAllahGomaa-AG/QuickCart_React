@@ -1,11 +1,48 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from '../../../assets/images/LOGO.png'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { UserData } from '../../../context/UserContext'
 import toast from 'react-hot-toast'
 
 export default function NavBar () {
+  // #region
+  // حدد تاريخ نهاية العرض
+  const endDate = new Date()
+  endDate.setDate(endDate.getDate() + 10)
+  endDate.setHours(endDate.getHours() + 6)
+  endDate.setMinutes(endDate.getMinutes() + 12)
+  endDate.setSeconds(endDate.getSeconds() + 12)
+
+  const calculateTimeLeft = () => {
+    const now = new Date()
+    const difference = endDate - now
+
+    if (difference <= 0) {
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / (1000 * 60)) % 60),
+      seconds: Math.floor((difference / 1000) % 60)
+    }
+  }
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  // #endregion
   //#region State
+
+  
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [currencyOpen, setCurrencyOpen] = useState(false)
@@ -19,7 +56,6 @@ export default function NavBar () {
     setToken(null)
     navigate('/login')
     toast.success('Successfully logged out!')
-
   }
   //#endregion
 
@@ -28,7 +64,7 @@ export default function NavBar () {
     //
     <>
       {/*sale */}
-      <div className='sale bg-purple font-montserrat text-white py-2 hidden lg:block '>
+      <div className='sale bg-purple font-montserrat text-white py-2 hidden lg:block'>
         <div className='w-full lg:max-w-[80%] mx-auto flex flex-col lg:flex-row justify-between items-center gap-2 px-4'>
           <div className='text-sm text-center lg:text-left'>
             FREE delivery & <span className='font-semibold'>40% Discount</span>{' '}
@@ -41,28 +77,27 @@ export default function NavBar () {
             </span>
 
             <span className='flex items-baseline gap-1'>
-              <span className='text-lg font-bold'>47</span>
+              <span className='text-lg font-bold'>{timeLeft.days}</span>
               <span className='text-gray-200 text-xs'>days</span>
             </span>
 
             <span className='flex items-baseline gap-1'>
-              <span className='text-lg font-bold'>06</span>
+              <span className='text-lg font-bold'>{timeLeft.hours}</span>
               <span className='text-gray-200 text-xs'>hour</span>
             </span>
 
             <span className='flex items-baseline gap-1'>
-              <span className='text-lg font-bold'>12</span>
+              <span className='text-lg font-bold'>{timeLeft.minutes}</span>
               <span className='text-gray-200 text-xs'>min</span>
             </span>
 
             <span className='flex items-baseline gap-1'>
-              <span className='text-lg font-bold'>12</span>
+              <span className='text-lg font-bold'>{timeLeft.seconds}</span>
               <span className='text-gray-200 text-xs'>sec</span>
             </span>
           </div>
         </div>
       </div>
-
       {/* Navbar */}
       <div className='Navbar'>
         {/* first */}
@@ -163,7 +198,9 @@ export default function NavBar () {
               )}
             </div>
 
-            <a className='hover:text-gray-500 transition-all duration-200 cursor-pointer'>Order track</a>
+            <a className='hover:text-gray-500 transition-all duration-200 cursor-pointer'>
+              Order track
+            </a>
           </div>
         </div>
         <div className='border-b'></div>
@@ -265,28 +302,28 @@ export default function NavBar () {
         {/* third */}
         <div className='container max-w-[80%] mx-auto hidden lg:flex items-center justify-between gap-4 py-3'>
           <ul className='flex gap-4 text-sm font-semibold'>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
               <NavLink to='home'>Home</NavLink>{' '}
             </li>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200 '>
               <NavLink to='shop'>Shop</NavLink>
             </li>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200 '>
               <NavLink to='fruits-vegetables'>Fruits & Vegetables</NavLink>
             </li>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
               <NavLink to='beverages'>Beverages</NavLink>
             </li>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
               <NavLink to='blog'>Blog</NavLink>
             </li>
-            <li className='cursor-pointer'>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
               <NavLink to='contact'>Contact</NavLink>
             </li>
           </ul>
           <ul className='flex items-center gap-4 text-sm font-semibold'>
-            <li>Trending Products</li>
-            <li className='text-[#DC2626]'>Almost Finished</li>
+            <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>Trending Products</li>
+            <li className=' cursor-pointer text-[#DC2626] hover:text-[#DC2626]'>Almost Finished</li>
             <li>
               <button className='bg-gradient-to-r from-[#DC2626] to-[#EA580C] text-white px-[5px] py-[2px] rounded text-xs'>
                 SALE
@@ -297,7 +334,6 @@ export default function NavBar () {
         <div className='border-b'></div>
       </div>
       {/* Drawer init and show */}
-
       <div className='flex lg:hidden justify-between items-center p-3'>
         <button
           onClick={() => setIsOpen(true)}
@@ -314,7 +350,6 @@ export default function NavBar () {
           </a>
         </div>
       </div>
-
       {/* Drawer component */}
       <div
         className={`rounded-tr-[30px] border-r-[3px] border-gray-200 fixed top-0 left-0 z-40 h-screen p-2 overflow-y-auto bg-white w-64 dark:bg-gray-800 transition-transform duration-300 ${

@@ -27,7 +27,7 @@ export default function Login () {
             setToken(data.token)
             setTimeout(() => {
               navigate('/home')
-            }, 2000)
+            }, 1000)
             return <b>Successfully logged in!</b>
           }
           throw new Error('Login failed')
