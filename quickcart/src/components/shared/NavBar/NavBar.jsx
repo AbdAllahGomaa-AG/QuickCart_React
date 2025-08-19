@@ -42,7 +42,7 @@ export default function NavBar () {
   // #endregion
   //#region State
 
-  
+  //#region  State
   const [isOpen, setIsOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [currencyOpen, setCurrencyOpen] = useState(false)
@@ -50,6 +50,7 @@ export default function NavBar () {
   let navigate = useNavigate()
   //#endregion
 
+  
   //#region  Functions
   function logout () {
     localStorage.removeItem('token')
@@ -64,6 +65,7 @@ export default function NavBar () {
     //
     <>
       {/*sale */}
+    
       <div className='sale bg-purple font-montserrat text-white py-2 hidden lg:block'>
         <div className='w-full lg:max-w-[80%] mx-auto flex flex-col lg:flex-row justify-between items-center gap-2 px-4'>
           <div className='text-sm text-center lg:text-left'>
@@ -211,7 +213,7 @@ export default function NavBar () {
           <div className='flex items-center gap-4'>
             {/* logo */}
             <a className='block'>
-              <img src={logo} alt='Logo' className='w-full' />
+              <img src={logo} alt='Logo' className='w-full cursor-pointer' onClick={() => navigate("/home")} />
             </a>
             {/* location */}
             <i className='fa-solid fa-location-dot text-xl'></i>
@@ -268,8 +270,10 @@ export default function NavBar () {
             </div>
 
             {/* Cart */}
-            <div className='relative'>
+            <div className='relative' >
+              <NavLink to='/cart'>
               <i className='fa-solid fa-cart-shopping text-2xl text-gray-900 cursor-pointer transition-all duration-300 ease-in-out hover:text-red-500 hover:scale-110'></i>
+              </NavLink>
               <span
                 className='absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center'
                 aria-label='Cart count'
@@ -301,7 +305,7 @@ export default function NavBar () {
 
         {/* third */}
         <div className='container max-w-[80%] mx-auto hidden lg:flex items-center justify-between gap-4 py-3'>
-          <ul className='flex gap-4 text-sm font-semibold'>
+          <ul className='flex gap-4 text-base font-medium'>
             <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>
               <NavLink to='/home'>Home</NavLink>
             </li>
@@ -321,7 +325,7 @@ export default function NavBar () {
               <NavLink to='contact'>Contact</NavLink>
             </li>
           </ul>
-          <ul className='flex items-center gap-4 text-sm font-semibold'>
+          <ul className='flex items-center gap-4 text-base font-medium'>
             <li className='cursor-pointer hover:text-gray-500 transition-all duration-200'>Trending Products</li>
             <li className=' cursor-pointer text-[#DC2626] hover:text-[#DC2626]'>Almost Finished</li>
             <li>
@@ -390,7 +394,7 @@ export default function NavBar () {
               { icon: 'fa-info-circle', text: 'About Us' },
               { icon: 'fa-user', text: 'My Account' },
               { icon: 'fa-heart', text: 'Wishlist' },
-              { icon: 'fa-shopping-cart', text: 'Cart' },
+              { icon: 'fa-shopping-cart', text: 'Cart'  },
               { icon: 'fa-globe', text: 'English' }
             ].map((item, idx) => (
               <li key={idx}>

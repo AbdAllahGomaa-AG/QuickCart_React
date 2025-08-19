@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { BASE_URL } from "../../environment/environment";
 import Product from "./Product";
+import LoadingScreen from "../shared/LoadingScreen/LoadingScreen";
 
 export default function AllProduct() {
   //#region  Products
@@ -11,16 +12,22 @@ export default function AllProduct() {
     try {
       let { data } = await axios.get(`${BASE_URL}/products`);
       setProducts(data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
-    }
+      setLoading(false);
+      }
   }
   useEffect(() => {
     GetProducts();
   }, []);
   //#endregion
+  //#region loading
+  const [loading, setLoading] = useState(true);
+  //#endregion
   return (
     <>
+    {loading ? <LoadingScreen /> : (
       <div className="lg:max-w-[80%] w-[80%] mx-auto mt-4">
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-center py-6">
           <h2 className="text-lg font-semibold flex items-center ">
@@ -39,6 +46,7 @@ export default function AllProduct() {
             ))}
         </div>
       </div>
+    )}
     </>
   );
 }

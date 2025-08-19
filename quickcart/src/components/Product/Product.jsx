@@ -1,11 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import CartAddServices from "../../Core/services/Cartaddservices";
+import { Toaster } from "react-hot-toast";
 
 export default function Product({ product }) {
   return (
     <>
     
       <div className="max-w-2xl mx-auto mt-6">
+        <Toaster position="top-right" reverseOrder={false} />
         <div className="bg-white shadow-2xl px-2 border border-gray-300 rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700 hover:scale-[1.01] transition-all duration-200">
           <NavLink to={`/specific-product/${product._id}`} >
             <img
@@ -61,7 +64,7 @@ export default function Product({ product }) {
                 {product.price}$
               </span>
               <div className="flex items-center gap-3">
-                <button className="p-2 rounded-full ">
+                <button className="p-2 rounded-full " onClick={() => CartAddServices(product._id)}>
                   <i className="fa-solid fa-cart-plus text-black dark:text-white text-lg hover:text-red-600 transition-all duration-200"></i>
                 </button>
                 <button className="p-2 rounded-full ">

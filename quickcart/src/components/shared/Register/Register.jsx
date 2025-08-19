@@ -64,7 +64,7 @@ export default function Register () {
     ),
     phone: Yup.string()
       .matches(
-        /^(002)?01[0125][0-9]{8}$/,
+      
         'Phone number must be between 10 and 15 digits'
       )
       .required('Phone is required')

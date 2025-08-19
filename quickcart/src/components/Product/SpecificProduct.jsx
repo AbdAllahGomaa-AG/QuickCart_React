@@ -4,54 +4,85 @@ import axios from "axios";
 import { BASE_URL } from "../../environment/environment";
 import { useState } from "react";
 import LoadingScreen from "../shared/LoadingScreen/LoadingScreen";
+import Slider from "react-slick";
+import CartAddServices from "../../Core/services/Cartaddservices";
+import { Toaster } from "react-hot-toast";
 
 export default function SpecificProduct() {
+  //#region useEffect
   useEffect(() => {
     GetSpecificProduct();
   }, []);
-
+  //#endregion
+  //#region useState
   const [productDetail, setProductDetail] = useState([]);
   const [loading, setLoading] = useState(true);
+  //#endregion
 
+  //#region useParams
+  let { id } = useParams();
+  //#endregion
+
+  //#region Slider
+  var settings = {
+    dots: true,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  //#endregion
+
+  //#region methods
   async function GetSpecificProduct() {
     try {
       setLoading(true);
       let { data } = await axios.get(`${BASE_URL}/products/${id}`);
       setProductDetail(data.data);
+      console.log(productDetail);
       setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log(error);
     }
   }
-
-  let { id } = useParams();
-  console.log(id);
+  //#endregion
 
   return (
     <>
       {loading ? (
         <LoadingScreen />
       ) : (
+        
         <section className="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
+          <Toaster position="top-right" reverseOrder={false} />
           <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0">
             <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
               {/* image */}
-              <div className="shrink-0 max-w-md lg:max-w-lg mx-auto">
-                <img
-                  className="w-72 dark:hidden"
-                  src={productDetail.imageCover}
-                  alt=""
-                />
+              <div className="   p-4 ">
+                <Slider {...settings}>
+                  {productDetail?.images?.map((image) => {
+                    return (
+                      <img
+                        className="w-full h-96 object-contain rounded-lg "
+                        src={image}
+                        alt=""
+                      />
+                    );
+                  })}
+                </Slider>
               </div>
 
               <div className="mt-6 sm:mt-8 lg:mt-0">
                 <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                  {productDetail.title}
+                  {productDetail?.title}
                 </h1>
                 <div className="mt-4 sm:items-center sm:gap-4 sm:flex">
                   <p className="text-xl font-bold text-gray-900 sm:text-3xl dark:text-white">
-                    {productDetail.price}$
+                    {productDetail?.price}$
                   </p>
 
                   <div className="flex items-center gap-2 mt-2 sm:mt-0">
@@ -60,7 +91,7 @@ export default function SpecificProduct() {
                         return (
                           <svg
                             className={
-                              rate <= productDetail.ratingsAverage
+                              rate <= productDetail?.ratingsAverage
                                 ? "w-5 h-5 text-yellow-300"
                                 : "w-5 h-5 text-gray-300"
                             }
@@ -78,7 +109,7 @@ export default function SpecificProduct() {
                     </div>
 
                     <p className="text-sm font-medium leading-none text-gray-700 dark:text-gray-400">
-                      {productDetail.ratingsAverage}
+                      {productDetail?.ratingsAverage}
                     </p>
                   </div>
                 </div>
@@ -110,7 +141,7 @@ export default function SpecificProduct() {
                   </a>
 
                   <a
-                    href="#"
+                    onClick={() => CartAddServices(productDetail._id)}
                     title=""
                     className="text-white mt-4 sm:mt-0 bg-purple hover:bg-purple/90 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
                     role="button"
@@ -137,7 +168,7 @@ export default function SpecificProduct() {
                 </div>
                 <hr className="my-2 md:my-8 border-gray-400 dark:border-gray-800" />
                 <p className="text-gray-500 dark:text-gray-400">
-                  {productDetail.description}
+                  {productDetail?.description}
                 </p>
               </div>
             </div>
