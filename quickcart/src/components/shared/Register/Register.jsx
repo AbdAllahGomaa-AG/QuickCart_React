@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import { UserData } from '../../../context/UserContext'
 import { BASE_URL } from '../../../environment/environment'
 import toast, { Toaster } from 'react-hot-toast'
+import { Helmet } from 'react-helmet'
 
 export default function Register () {
   // #region state
@@ -48,27 +49,24 @@ export default function Register () {
   // #region validation
   let validationSchema = Yup.object().shape({
     name: Yup.string()
-      .min(3, 'min length is 3')
-      .max(50, 'max length is 50')
-      .required('Name is required'),
-    email: Yup.string().email('Invalid email').required('Email is required'),
+      .min(3, "min length is 3")
+      .max(50, "max length is 50")
+      .required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        'Password must be at least 8 characters long and contain at least one letter and one number'
+        "Password must be at least 8 characters long and contain at least one letter and one number"
       )
-      .required('Password is required'),
+      .required("Password is required"),
     rePassword: Yup.string().oneOf(
-      [Yup.ref('password'), null],
-      'Passwords must match'
+      [Yup.ref("password"), null],
+      "Passwords must match"
     ),
     phone: Yup.string()
-      .matches(
-      
-        'Phone number must be between 10 and 15 digits'
-      )
-      .required('Phone is required')
-  })
+      .matches(/^(\+201|01|00201)[0-2,5][0-9]{8}$/, "Invalid phone number")
+      .required("Phone is required"),
+  });
   // #endregion
 
   // #region formik
@@ -88,6 +86,10 @@ export default function Register () {
 
   return (
     <>
+    <Helmet>
+      <title>Register</title>
+
+    </Helmet>
       <Toaster position='top-right' reverseOrder={false} />
       <section className='bg-gray-50 dark:bg-gray-900 min-h-screen py-10'>
         <div className='flex flex-col items-center justify-start pt-8 px-6 py-8 mx-auto lg:py-0'>

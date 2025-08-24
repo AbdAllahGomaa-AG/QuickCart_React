@@ -2,24 +2,29 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import CartAddServices from "../../Core/services/Cartaddservices";
 import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContextProvider";
+import WishlistAddServices from "../../Core/services/Wishlistadd";
 
 export default function Product({ product }) {
+  const { setCart } = useContext(CartContext);
   return (
     <>
-    
-      <div className="max-w-2xl mx-auto mt-6">
-        <Toaster position="top-right" reverseOrder={false} />
+      <div className="max-w-2xl mx-auto ">
         <div className="bg-white shadow-2xl px-2 border border-gray-300 rounded-lg max-w-sm dark:bg-gray-800 dark:border-gray-700 hover:scale-[1.01] transition-all duration-200">
-          <NavLink to={`/specific-product/${product._id}`} >
+          <NavLink to={`/specific-product/${product._id}`}>
             <img
-              className="rounded-t-lg p-8 cursor-pointer"
+              className="rounded-t-lg p-8 cursor-pointer h-52 w-full object-contain"
               src={product.imageCover}
               alt="product"
             />
           </NavLink>
           <div className="px-2 pb-5">
-            <NavLink to={`/specific-product/${product._id}`} className="cursor-pointer">
-              <h3 className="text-gray-900 font-semibold text-xl tracking-tight dark:text-white line-clamp-1">
+            <NavLink
+              to={`/specific-product/${product._id}`}
+              className="cursor-pointer"
+            >
+              <h3 className="text-gray-900 font-semibold text-lg tracking-tight dark:text-white line-clamp-1">
                 {product.title}
               </h3>
             </NavLink>
@@ -64,10 +69,16 @@ export default function Product({ product }) {
                 {product.price}$
               </span>
               <div className="flex items-center gap-3">
-                <button className="p-2 rounded-full " onClick={() => CartAddServices(product._id)}>
+                <button
+                  className="p-2 rounded-full "
+                  onClick={() => CartAddServices(product._id, setCart)}
+                >
                   <i className="fa-solid fa-cart-plus text-black dark:text-white text-lg hover:text-red-600 transition-all duration-200"></i>
                 </button>
-                <button className="p-2 rounded-full ">
+                <button
+                  onClick={() => WishlistAddServices(product._id)}
+                  className="p-2 rounded-full "
+                >
                   <i className="fa-solid fa-heart text-black dark:text-white text-lg hover:text-red-600 transition-all duration-200"></i>
                 </button>
               </div>

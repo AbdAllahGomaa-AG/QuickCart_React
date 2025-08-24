@@ -1,61 +1,88 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { BASE_URL } from '../../environment/environment'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../../environment/environment";
+import { NavLink } from "react-router-dom";
 
-export default function Categories () {
+export default function Categories() {
+  //#region state hooks
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  //#endregion
+
   //#region lifecycle hooks
   useEffect(() => {
-    GetCategories()
-  }, [])
+    GetCategories();
+  }, []);
   //#endregion
 
-  //#region state hooks
-  const [categories, setCategories] = useState([])
-  //#endregion
-
-  async function GetCategories () {
-    let { data } = await axios.get(`${BASE_URL}/categories`)
-    setCategories(data.data)
-    console.log(data)
-
-    // Fetch categories from an API or database
+  async function GetCategories() {
+    try {
+      let { data } = await axios.get(`${BASE_URL}/categories`);
+      setCategories(data.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <>
-      <div className=' lg:max-w-[80%] w-[80%] mx-auto mt-4'>
-        <div className='flex flex-wrap sm:flex-nowrap justify-between items-center py-6'>
-          <h2 className='text-lg font-semibold flex items-center '>
+      <div className="w-[95%] lg:w-[80%] mx-auto mt-10">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+          <h2 className="text-xl md:text-2xl font-bold flex flex-wrap items-center gap-3 border-l-8 pl-2  border-purple">
             Top Categories
-            <span className='text-gray-500 text-xs ml-2 whitespace-nowrap md:block hidden'>
+            <span className="text-gray-500 text-xs md:text-sm whitespace-nowrap hidden md:inline">
               New products with updated stocks.
             </span>
           </h2>
-          <button className='bg-white flex justify-center items-center text-gray-800 border border-gray-300 px-3 py-2 rounded-full text-xs hover:bg-gray-100 transition mt-2 sm:mt-0'>
-            View All <i className='fas fa-chevron-right ml-1'></i>
-          </button>
+          <NavLink to="/categories">
+            <button className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-medium shadow hover:bg-gray-800 transition">
+              View All <i className="fas fa-chevron-right ml-2"></i>
+            </button>
+          </NavLink>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-9 gap-4'>
-          {categories.slice(0, 9).map(category => (
-            <div
-              key={category.id}
-              className='bg-white p-4 rounded-md shadow-lg border border-gray-300'
-            >
-              <img
-                src={category.image}
-                alt={category.name}
-                className='w-full h-36 sm:h-32 object-cover mb-2 rounded'
-              />
-              <h3 className='text-sm font-semibold mb-2 text-center'>
-                {category.name.slice(0, 10)}
-              </h3>
-              <p className='text-gray-600 text-xs sm:text-sm'>
-                {category.description}
-              </p>
-            </div>
-          ))}
+
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden animate-pulse"
+                >
+                  <div className="w-full h-44 bg-gray-200"></div>
+                  <div className="p-4 text-center">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-3"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-5/6 mx-auto"></div>
+                  </div>
+                </div>
+              ))
+            : categories.slice(0, 4).map((category) => (
+                <div
+                  key={category.id}
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition border border-gray-100 overflow-hidden"
+                >
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-44 object-contain"
+                    loading="lazy"
+                  />
+                  <div className="p-4 text-center">
+                    <h3 className="text-base md:text-lg font-semibold mb-2 line-clamp-1">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2">
+                      {category.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -7,8 +7,12 @@ import LoadingScreen from "../shared/LoadingScreen/LoadingScreen";
 import Slider from "react-slick";
 import CartAddServices from "../../Core/services/Cartaddservices";
 import { Toaster } from "react-hot-toast";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContextProvider";
+import WishlistAddServices from "../../Core/services/Wishlistadd";
 
 export default function SpecificProduct() {
+  const { setCart } = useContext(CartContext);
   //#region useEffect
   useEffect(() => {
     GetSpecificProduct();
@@ -115,7 +119,7 @@ export default function SpecificProduct() {
                 </div>
                 <div className="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
                   <a
-                    href="#"
+                   onClick={() => WishlistAddServices(productDetail._id)}
                     title=""
                     className="flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     role="button"
@@ -141,7 +145,7 @@ export default function SpecificProduct() {
                   </a>
 
                   <a
-                    onClick={() => CartAddServices(productDetail._id)}
+                    onClick={() => CartAddServices(productDetail._id,setCart)}
                     title=""
                     className="text-white mt-4 sm:mt-0 bg-purple hover:bg-purple/90 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
                     role="button"

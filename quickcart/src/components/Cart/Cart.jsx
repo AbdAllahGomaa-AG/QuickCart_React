@@ -145,7 +145,7 @@ export default function Cart() {
 
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>Cart</title>
         <link rel="icon" href="/LOGO.png" type="image/png" />
         <meta name="description" content="Cart" />
@@ -158,11 +158,14 @@ export default function Cart() {
             <div className="flex items-center justify-between pb-3 mb-4">
               {/* Title */}
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                🛒 Shopping Cart
+                🛒 Shopping Cart ({Products.length})
               </h2>
 
               {/* Delete All Button */}
-              <button onClick={() => clearCart()} className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-red-500 text-white rounded-xl shadow hover:bg-red-600 transition ml-5">
+              <button
+                onClick={() => clearCart()}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-red-500 text-white rounded-xl shadow hover:bg-red-600 transition ml-5"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"

@@ -13,6 +13,12 @@ import SpecificProduct from "./components/Product/specificProduct";
 import Cart from "./components/Cart/Cart";
 import OrderCheckout from "./components/Ordercheckout/Ordercheckout";
 import AllOrders from "./components/allorders/allorders";
+import CartContextProvider from "./context/CartContextProvider.jsx";
+import { Toaster } from "react-hot-toast";
+import Wishlist from "./components/Wishlist/Wishlist.jsx";
+import AllCategories from "./components/categories/AllCategories.jsx";
+import Brands from "./components/Brands/Brands.jsx";
+import { HelmetProvider } from "react-helmet-async";
 
 //#region Routing
 let routers = createBrowserRouter([
@@ -23,59 +29,31 @@ let routers = createBrowserRouter([
       { path: "", element: <Home /> },
       {
         path: "home",
-        element: (
-          <Guards>
-            <Home />
-          </Guards>
-        ),
+        element: <Home />,
       },
       {
         path: "shop",
-        element: (
-          <Guards>
-            <Shop />
-          </Guards>
-        ),
+        element: <Shop />,
       },
       {
         path: "login",
-        element: (
-          <Guards>
-            <Login />
-          </Guards>
-        ),
+        element: <Login />,
       },
       {
         path: "register",
-        element: (
-          <Guards>
-            <Register />
-          </Guards>
-        ),
+        element: <Register />,
       },
       {
         path: "forgot-password",
-        element: (
-          <Guards>
-            <ForgetPassword />
-          </Guards>
-        ),
+        element: <ForgetPassword />,
       },
       {
         path: "all-product",
-        element: (
-          <Guards>
-            <AllProduct />
-          </Guards>
-        ),
+        element: <AllProduct />,
       },
       {
         path: "specific-product/:id",
-        element: (
-          <Guards>
-            <SpecificProduct />
-          </Guards>
-        ),
+        element: <SpecificProduct />,
       },
       {
         path: "cart",
@@ -101,6 +79,22 @@ let routers = createBrowserRouter([
           </Guards>
         ),
       },
+      {
+        path: "wishlist",
+        element: (
+          <Guards>
+            <Wishlist />
+          </Guards>
+        ),
+      },
+      {
+        path: "categories",
+        element: <AllCategories />,
+      },
+      {
+        path: "brands",
+        element: <Brands />,
+      },
 
       { path: "*", element: <Shop /> },
     ],
@@ -110,12 +104,16 @@ let routers = createBrowserRouter([
 
 function App() {
   return (
-    <>
-      <UserContextProvider>
-        <RouterProvider router={routers}></RouterProvider>
-      </UserContextProvider>
-    </>
+    <HelmetProvider>
+      <CartContextProvider>
+        <UserContextProvider>
+          <RouterProvider router={routers}></RouterProvider>
+          <Toaster position="top-right" reverseOrder={false}></Toaster>
+        </UserContextProvider>
+      </CartContextProvider>
+    </HelmetProvider>
   );
 }
+
 
 export default App;
