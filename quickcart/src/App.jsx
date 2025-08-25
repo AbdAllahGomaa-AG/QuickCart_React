@@ -19,6 +19,9 @@ import Wishlist from "./components/Wishlist/Wishlist.jsx";
 import AllCategories from "./components/categories/AllCategories.jsx";
 import Brands from "./components/Brands/Brands.jsx";
 import { HelmetProvider } from "react-helmet-async";
+import NotFoundz from "./components/NotFound/NotFound.jsx";
+import NotFound from "./components/NotFound/NotFound.jsx";
+import ContactUs from "./components/ContctUs/ContactUs.jsx";
 
 //#region Routing
 let routers = createBrowserRouter([
@@ -88,6 +91,14 @@ let routers = createBrowserRouter([
         ),
       },
       {
+        path: "contactUs",
+        element: (
+          <Guards>
+            <ContactUs />
+          </Guards>
+        ),
+      },
+      {
         path: "categories",
         element: <AllCategories />,
       },
@@ -96,7 +107,7 @@ let routers = createBrowserRouter([
         element: <Brands />,
       },
 
-      { path: "*", element: <Shop /> },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);

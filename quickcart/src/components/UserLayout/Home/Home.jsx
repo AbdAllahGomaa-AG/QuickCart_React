@@ -31,7 +31,7 @@ export default function Home() {
       {/* Products */}
       <div className="lg:max-w-[80%] w-[80%] mx-auto mt-10">
         <div className="flex flex-wrap sm:flex-nowrap justify-between items-center py-6">
-          <h2 className="text-xl md:text-2xl font-bold flex flex-wrap items-center gap-3 mt-6 border-l-8 pl-2  border-purple ">
+          <h2 className="text-xl md:text-2xl font-bold flex flex-wrap items-center gap-3  border-l-8 pl-2  border-purple ">
             Top Products
             <span className="text-gray-500 text-sm ml-2 whitespace-nowrap md:block hidden">
               New products with updated stocks.

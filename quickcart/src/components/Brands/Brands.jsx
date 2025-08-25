@@ -33,7 +33,7 @@ export default function Brands({ limit }) {
   return (
     <div className="w-[95%] lg:w-[80%] mx-auto mt-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+      <div className="flex flex-wrap sm:flex-nowrap justify-between items-center py-6">
         {limit > 0 ? (
           <>
             <h2 className="text-xl md:text-2xl font-bold flex flex-wrap items-center gap-3 mt-6 border-l-8 pl-2  border-purple">
